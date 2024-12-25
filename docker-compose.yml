@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-server
+    networks:
+      - app-network
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "3307:3306"
+      - "33061:33060"
+      
+  cpp_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.cpp_server
+    container_name: cpp_server
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: paul
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    ports:
+      - "5555:5555"
+      
+  zmq-parallel:
+    build:
+      context: .
+      dockerfile: Dockerfile.zmq-parallel
+    container_name: php-zmq-parallel-server
+    networks:
+      - app-network
+    volumes:
+      - ./zmq-server:/app
+    depends_on:
+      - mysql
+    command: php /app/sleep.php   
+      
+  php-apache:
+    build:
+      context: .
+      dockerfile: Dockerfile.php-apache
+    container_name: php-apache-server
+    networks:
+      - app-network
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+      - zmq-parallel      
+
+networks:
+  app-network:
+
+volumes:
+  mysql-data:

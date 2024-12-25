@@ -1,0 +1,52 @@
+FROM ubuntu:22.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build tools and dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-distutils \
+    python3-apt \
+    build-essential \
+    manpages-dev \
+    gawk \
+    bison \
+    texinfo \
+    wget \
+    git \
+    g++ \
+    cmake \
+    make \
+    mariadb-client \
+    mariadb-common \
+    libmariadb-dev \
+    libmariadb-dev-compat \
+    libzmq3-dev \
+    pkg-config \
+    && ln -s /usr/bin/python3 /usr/bin/python \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y \
+    libmysqlcppconn-dev
+
+
+# Set the working directory
+WORKDIR /app
+
+# Copy source code
+COPY . /app
+
+# Debug the Makefile
+RUN echo "Testing Makefile..." && \
+    /usr/bin/gmake -f Makefile -n CONF=Release
+
+# Build the server
+RUN echo "Building the server..." && \
+    /usr/bin/gmake -f Makefile CONF=Release
+
+# Expose the server port
+EXPOSE 5555
+
+# Command to run the server
+CMD ["/app/dist/Release/GNU-Linux/cppzeromqasynchsqlserver"]
