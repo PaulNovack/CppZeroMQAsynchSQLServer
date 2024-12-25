@@ -99,6 +99,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <standard>11</standard>
           <incDir>
             <pElem>nlohmann</pElem>
             <pElem>.</pElem>

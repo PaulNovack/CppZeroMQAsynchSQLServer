@@ -31,20 +31,30 @@ sql::Connection* MySQLConnectionPool::getConnection() {
     if (!connectionPool_.empty()) {
         sql::Connection* conn = connectionPool_.back();
         connectionPool_.pop_back();
-        return conn;
-    } else {
-        // Create a new connection
-        sql::Connection* conn = driver_->connect(host_, user_, password_);
-        conn->setSchema(database_);
-        return conn;
+        if (conn && conn->isValid()) {
+            return conn;
+        } else {
+            delete conn;
+            // Create a new connection if the pooled one is invalid
+            conn = driver_->connect(host_, user_, password_);
+            conn->setSchema(database_);
+            return conn;
+        }
     }
+    // Create a new connection if the pool is empty
+    sql::Connection* conn = driver_->connect(host_, user_, password_);
+    conn->setSchema(database_);
+    return conn;
 }
 
 void MySQLConnectionPool::releaseConnection(sql::Connection* conn) {
     std::lock_guard<std::mutex> lock(mutex_);
-    connectionPool_.push_back(conn);
+    if (conn && conn->isValid()) {
+        connectionPool_.push_back(conn);
+    } else {
+        delete conn;
+    }
 }
-
 void MySQLConnectionPool::initializePool() {
     for (int i = 0; i < poolSize_; ++i) {
         sql::Connection* conn = driver_->connect(host_, user_, password_);

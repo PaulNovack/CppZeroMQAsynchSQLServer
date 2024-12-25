@@ -101,7 +101,9 @@ void processQueue(zmq::socket_t &socket) {
             requestQueue.pop();
         }
 
-        const auto &[queryId, query, clientId] = request;
+        const string &queryId = get<0>(request);
+        const string &query = get<1>(request);
+        const string &clientId = get<2>(request);
         handleRequest(socket, queryId, query, clientId);
     }
 }
@@ -150,7 +152,6 @@ void initializeDatabase() {
     }
 }
 
-
 int main() {
     initializeDatabase();
     zmq::context_t context(1);
@@ -162,7 +163,9 @@ int main() {
     // Create worker threads
     vector<thread> workers;
     for (int i = 0; i < maxThreads; ++i) {
-        workers.emplace_back(processQueue, ref(socket));
+        workers.emplace_back([&socket]() {
+            processQueue(socket);
+        });
     }
 
     while (true) {
