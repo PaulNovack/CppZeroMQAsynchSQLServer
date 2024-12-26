@@ -33,7 +33,10 @@
     <itemPath>Dockerfile</itemPath>
     <itemPath>nlohmann/adl_serializer.hpp</itemPath>
     <itemPath>docker-compose.yml</itemPath>
+    <itemPath>app/index.php</itemPath>
     <itemPath>zmq-server/sleep.php</itemPath>
+    <itemPath>app/standard.php</itemPath>
+    <itemPath>app/zeromq.php</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>cppzmq</Elem>
@@ -71,6 +74,12 @@
       <item path="DataStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/index.php" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/standard.php" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/zeromq.php" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cppzmq/zmq.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -129,6 +138,12 @@
       <item path="DataStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/index.php" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/standard.php" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/zeromq.php" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cppzmq/zmq.hpp" ex="false" tool="3" flavor2="0">
       </item>

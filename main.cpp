@@ -20,13 +20,13 @@ using namespace std;
 mutex mtx;
 condition_variable cv;
 int responses = 0;
-const int maxThreads = 75;
+const int maxThreads = 40;
 
 // Queue to hold pending requests
 queue<tuple<string, string, string>> requestQueue;
 
 // Initialize MySQL connection pool
-const int poolSize = 75;
+const int poolSize = 40;
 const int heartbeatInterval = 60;
 
 MySQLConnectionPool connectionPool(
@@ -136,9 +136,53 @@ void initializeDatabase() {
 
         // Insert 5000 users into the table using a single SQL command
         std::string insertQuery = "INSERT INTO users (name, email) VALUES ";
-        for (int i = 1; i <= 5000; ++i) {
+        for (int i = 1; i <= 100000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
-            if (i < 5000) {
+            if (i < 100000) {
+                insertQuery += ", "; // Add a comma for all but the last entry
+            }
+        }
+
+        // Execute the bulk insert
+        stmt->execute(insertQuery);
+        
+        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        for (int i = 100001; i <= 200000; ++i) {
+            insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
+            if (i < 200000) {
+                insertQuery += ", "; // Add a comma for all but the last entry
+            }
+        }
+
+        // Execute the bulk insert
+        stmt->execute(insertQuery);
+        
+        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        for (int i = 200001; i <= 300000; ++i) {
+            insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
+            if (i < 300000) {
+                insertQuery += ", "; // Add a comma for all but the last entry
+            }
+        }
+
+        // Execute the bulk insert
+        stmt->execute(insertQuery);
+        
+        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        for (int i = 300001; i <= 400000; ++i) {
+            insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
+            if (i < 400000) {
+                insertQuery += ", "; // Add a comma for all but the last entry
+            }
+        }
+
+        // Execute the bulk insert
+        stmt->execute(insertQuery);
+        
+        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        for (int i = 400001; i <= 500000; ++i) {
+            insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
+            if (i < 500000) {
                 insertQuery += ", "; // Add a comma for all but the last entry
             }
         }
@@ -146,7 +190,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
 
-        cout << "Database initialized and 5000 users added." << endl;
+        cout << "Database initialized and 500000 users added." << endl;
     } catch (sql::SQLException &e) {
         cerr << "SQL Error during database initialization: " << e.what() << endl;
     } catch (const std::exception &e) {

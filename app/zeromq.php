@@ -1,6 +1,7 @@
 <?php
+
 $startTime = microtime(true);
-require 'vendor/autoload.php';
+
 
 $context = new ZMQContext();
 $socket = $context->getSocket(ZMQ::SOCKET_DEALER);
@@ -13,8 +14,8 @@ echo "Client ID: $clientId\n";
 
 $queries = [];
 
-for ($i = 0; $i < 10; $i++) {
-    $totalRows = 5000; // Adjust this to the total number of rows in the table
+for ($i = 0; $i < 25; $i++) {
+    $totalRows = 500000; // Adjust this to the total number of rows in the table
     $randomOffset = mt_rand(0, $totalRows - 1);
     $query = "SELECT users.* FROM users LIMIT 100 OFFSET $randomOffset";
     $queries[] = $query;
@@ -40,7 +41,8 @@ while (count($receivedResponses) < count($queries)) {
     if (isset($payload['id']) && isset($queryMap[$payload['id']])) {
         $queryId = $payload['id'];
         $receivedResponses[$queryId] = $payload['data'];
-        print_r($payload['data']);
+        //echo  "\n</ br></ br>";
+        //print_r($payload['data']);
     } else {
         echo "Received response with unknown query ID.\n";
     }
@@ -53,3 +55,4 @@ echo "Ran: " . sizeof($queries) . ' SQL queries' . PHP_EOL;
 // Calculate and display elapsed time
 $elapsedTime = ($endTime - $startTime) * 1000; // Convert seconds to milliseconds
 echo "Script executed in $elapsedTime milliseconds.\n";
+

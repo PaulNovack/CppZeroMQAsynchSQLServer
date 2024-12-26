@@ -44,6 +44,7 @@ services:
       - ./zmq-server:/app
     depends_on:
       - mysql
+      - cpp_server
     command: php /app/sleep.php   
       
   php-apache:
@@ -59,7 +60,8 @@ services:
       - "8080:80"
     depends_on:
       - mysql
-      - zmq-parallel      
+      - zmq-parallel     
+      - cpp_server
 
 networks:
   app-network:
