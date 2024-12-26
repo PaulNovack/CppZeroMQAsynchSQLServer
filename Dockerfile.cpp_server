@@ -32,6 +32,12 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y \
     libmysqlcppconn-dev
 
+RUN git clone https://github.com/msgpack/msgpack-c.git && \
+    cd msgpack-c \
+    checkout cpp_master \
+    cmake -DMSGPACK_CXX14=ON . \
+    sudo cmake --build . --target install
+
 
 # Set the working directory
 WORKDIR /app

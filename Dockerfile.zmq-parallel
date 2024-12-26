@@ -19,6 +19,7 @@ RUN apt-get update && \
 # Enable mysqli extension
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install msgpack
 
 # Clone the parallel extension source code
 RUN git clone https://github.com/krakjoe/parallel.git /usr/src/php/ext/parallel

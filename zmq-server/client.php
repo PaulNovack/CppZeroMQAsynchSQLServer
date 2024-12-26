@@ -35,7 +35,7 @@ foreach ($queries as $query) {
 $receivedResponses = [];
 while (count($receivedResponses) < count($queries)) {
     $response = $socket->recvMulti();
-    $payload = msgpack_unpack($response[1]);
+    $payload = msgpack_unpack($response[0]);
 
     if (isset($payload['id']) && isset($queryMap[$payload['id']])) {
         $queryId = $payload['id'];
