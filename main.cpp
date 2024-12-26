@@ -9,13 +9,12 @@
 #include <condition_variable>
 #include "cppzmq/zmq.hpp"
 #include "mySQLConnectionPool.h"
-#include "nlohmann/json.hpp"
 #include <cppconn/statement.h>
 #include <cppconn/resultset.h>
 #include <cppconn/prepared_statement.h> // Required for PreparedStatement
+#include <msgpack.hpp> // MessagePack header
 
 using namespace std;
-using json = nlohmann::json;
 
 // Globals
 mutex mtx;
@@ -50,10 +49,10 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
         unique_ptr<sql::Statement> stmt(conn->createStatement());
         unique_ptr<sql::ResultSet> res(stmt->executeQuery(query));
 
-        // Convert result set to JSON
-        json results = json::array();
+        // Convert result set to MessagePack-compatible data
+        vector<map<string, string>> results;
         while (res->next()) {
-            json row = json::object();
+            map<string, string> row;
             for (unsigned int i = 1; i <= res->getMetaData()->getColumnCount(); ++i) {
                 string columnName = res->getMetaData()->getColumnLabel(i);
                 string columnValue = res->getString(i);
@@ -62,21 +61,25 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
             results.push_back(row);
         }
 
-        // Create the full JSON response
-        json response = {
-            {"id", queryId},
-            {"data", results}
-        };
+        // Serialize the response using MessagePack
+        msgpack::sbuffer sbuf;
+        msgpack::packer<msgpack::sbuffer> packer(sbuf);
 
-        // Send the JSON response
+        // Pack the response as a map
+        packer.pack_map(2); // Two key-value pairs: "id" and "data"
+        packer.pack("id");
+        packer.pack(queryId); // Pack the query ID
+        packer.pack("data");
+        packer.pack(results); // Pack the results
+
+        // Send the MessagePack response
         {
             lock_guard<mutex> lock(mtx);
-            string responseString = response.dump(); // Serialize JSON to string
             socket.send(zmq::buffer(clientId), zmq::send_flags::sndmore);
-            socket.send(zmq::buffer(responseString), zmq::send_flags::none);
+            socket.send(zmq::buffer(sbuf.data(), sbuf.size()), zmq::send_flags::none);
             ++responses;
-            if(responses % 500 == 0){
-                cout << "Response Number: " << responses << " for Query ID: " << queryId << endl;            
+            if (responses % 500 == 0) {
+                cout << "Response Number: " << responses << " for Query ID: " << queryId << endl;
             }
         }
     } catch (sql::SQLException &e) {
@@ -90,6 +93,7 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
         connectionPool.releaseConnection(conn);
     }
 }
+
 
 // Worker thread function to process queued requests
 void processQueue(zmq::socket_t &socket) {
@@ -107,7 +111,7 @@ void processQueue(zmq::socket_t &socket) {
         const string &query = get<1>(request);
         const string &clientId = get<2>(request);
         handleRequest(socket, queryId, query, clientId);
-        std::this_thread::sleep_for(std::chrono::microseconds(20)); 
+        std::this_thread::sleep_for(std::chrono::microseconds(20));
     }
 }
 
@@ -138,7 +142,7 @@ void initializeDatabase() {
                 insertQuery += ", "; // Add a comma for all but the last entry
             }
         }
-        
+
         // Execute the bulk insert
         stmt->execute(insertQuery);
 
@@ -152,7 +156,6 @@ void initializeDatabase() {
         connectionPool.releaseConnection(conn);
     }
 }
-
 
 int main() {
     initializeDatabase();
@@ -189,25 +192,30 @@ int main() {
             continue;
         }
 
-        // Receive payload (JSON message)
+        // Receive payload (MessagePack message)
         auto messageBytes = socket.recv(message, zmq::recv_flags::none);
         if (!messageBytes) {
             cerr << "Failed to receive message payload." << endl;
             continue;
         }
 
-        string payload = string(static_cast<char *>(message.data()), message.size());
+        string payload(static_cast<char *>(message.data()), message.size());
         if (payload.empty()) {
             cerr << "Received empty payload." << endl;
             continue;
         }
 
         try {
-            // Parse JSON payload
-            json received = json::parse(payload);
-            if (received.contains("id") && received.contains("query")) {
-                string queryId = received["id"];
-                string query = received["query"];
+            // Parse MessagePack payload
+            msgpack::object_handle oh = msgpack::unpack(payload.data(), payload.size());
+            msgpack::object received = oh.get();
+
+            map<string, msgpack::object> receivedMap;
+            received.convert(receivedMap);
+
+            if (receivedMap.count("id") && receivedMap.count("query")) {
+                string queryId = receivedMap["id"].as<string>();
+                string query = receivedMap["query"].as<string>();
                 string clientIdStr(static_cast<char *>(clientId.data()), clientId.size());
 
                 // Enqueue the request for processing
@@ -217,12 +225,12 @@ int main() {
                 }
                 cv.notify_one();
             } else {
-                cerr << "Invalid message format received: " << payload << endl;
+                cerr << "Invalid message format received." << endl;
             }
-        } catch (json::exception &e) {
-            cerr << "JSON parsing error: " << e.what() << endl;
+        } catch (const msgpack::unpack_error &e) {
+            cerr << "MessagePack parsing error: " << e.what() << endl;
         }
-        std::this_thread::sleep_for(std::chrono::microseconds(20)); 
+        std::this_thread::sleep_for(std::chrono::microseconds(20));
     }
 
     for (auto &worker : workers) {

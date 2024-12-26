@@ -44,8 +44,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=
-CXXFLAGS=
+CCFLAGS=-m64
+CXXFLAGS=-m64
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -67,17 +67,17 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppzeromqasynchsqlserver: ${OBJECTFIL
 ${OBJECTDIR}/DataStore.o: DataStore.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataStore.o DataStore.cpp
+	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -I/usr/local/include/msgpack `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataStore.o DataStore.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -I/usr/local/include/msgpack `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/mySQLConnectionPool.o: mySQLConnectionPool.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mySQLConnectionPool.o mySQLConnectionPool.cpp
+	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -I/usr/local/include/msgpack `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mySQLConnectionPool.o mySQLConnectionPool.cpp
 
 # Subprojects
 .build-subprojects:
