@@ -12,7 +12,7 @@
 
 MySQLConnectionPool::MySQLConnectionPool(const std::string& host, const std::string& user, const std::string& password, const std::string& database, int poolSize, int heartbeatInterval)
     : host_(host), user_(user), password_(password), database_(database), poolSize_(poolSize), heartbeatInterval_(heartbeatInterval), heartbeatRunning_(true) {
-    sleep(5);
+    sleep(30);
     driver_ = sql::mysql::get_mysql_driver_instance();
     initializePool();
     startHeartbeat();
