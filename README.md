@@ -32,7 +32,7 @@ The `CppZeroMQAsynchSQLServer` repository demonstrates a robust way to implement
 
 1. **ZeroMQ for Communication:** Leverages ZeroMQ’s high-performance message queuing capabilities to manage communication between the server and clients.
 2. **Asynchronous Query Handling:** Processes multiple queries simultaneously using a thread pool.
-3. **JSON Response Format:** Responses are returned in JSON, making them easy to integrate with PHP frameworks.
+3. **Message Pack Response Format:** Responses are returned in message pack, making them easy to integrate with PHP frameworks.
 4. **Connection Pooling:** Efficient management of database connections ensures optimal resource utilization.
 
 ### How It Works
