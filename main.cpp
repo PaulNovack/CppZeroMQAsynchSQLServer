@@ -75,7 +75,9 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
             socket.send(zmq::buffer(clientId), zmq::send_flags::sndmore);
             socket.send(zmq::buffer(responseString), zmq::send_flags::none);
             ++responses;
-            cout << "Response Number: " << responses << " for Query ID: " << queryId << endl;
+            if(responses % 500 == 0){
+                cout << "Response Number: " << responses << " for Query ID: " << queryId << endl;            
+            }
         }
     } catch (sql::SQLException &e) {
         cerr << "SQL Error for Query ID: " << queryId << ": " << e.what() << endl;
@@ -105,6 +107,7 @@ void processQueue(zmq::socket_t &socket) {
         const string &query = get<1>(request);
         const string &clientId = get<2>(request);
         handleRequest(socket, queryId, query, clientId);
+        std::this_thread::sleep_for(std::chrono::microseconds(20)); 
     }
 }
 
@@ -127,19 +130,17 @@ void initializeDatabase() {
             "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)"
         );
 
-        // Insert 5000 users into the table
-        unique_ptr<sql::PreparedStatement> pstmt(conn->prepareStatement(
-            "INSERT INTO users (name, email) VALUES (?, ?)"
-        ));
+        // Insert 5000 users into the table using a single SQL command
+        std::string insertQuery = "INSERT INTO users (name, email) VALUES ";
         for (int i = 1; i <= 5000; ++i) {
-            pstmt->setString(1, "User " + to_string(i));
-            pstmt->setString(2, "user" + to_string(i) + "@example.com");
-            pstmt->execute();
-
-            if (i % 100 == 0) {
-                cout << "Inserted row: " << i << endl;
+            insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
+            if (i < 5000) {
+                insertQuery += ", "; // Add a comma for all but the last entry
             }
         }
+        
+        // Execute the bulk insert
+        stmt->execute(insertQuery);
 
         cout << "Database initialized and 5000 users added." << endl;
     } catch (sql::SQLException &e) {
@@ -151,6 +152,7 @@ void initializeDatabase() {
         connectionPool.releaseConnection(conn);
     }
 }
+
 
 int main() {
     initializeDatabase();
@@ -220,6 +222,7 @@ int main() {
         } catch (json::exception &e) {
             cerr << "JSON parsing error: " << e.what() << endl;
         }
+        std::this_thread::sleep_for(std::chrono::microseconds(20)); 
     }
 
     for (auto &worker : workers) {
