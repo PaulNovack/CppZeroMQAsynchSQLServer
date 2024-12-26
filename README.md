@@ -1,6 +1,6 @@
 # Adding Asynchronous Querying to PHP with C++ ZeroMQ and SQL Server
 
-There is another branch messagepack that uses message pack instead of JSON for messsages sent with ZeroMQ probably better performance.
+There is another branch messagepack that uses message pack instead of JSON for messsages sent with ZeroMQ probably better performance. https://github.com/PaulNovack/CppZeroMQAsynchSQLServer/tree/messagepack
 
 ## Introduction
 
