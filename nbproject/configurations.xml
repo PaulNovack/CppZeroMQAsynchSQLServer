@@ -33,6 +33,7 @@
     <itemPath>Dockerfile</itemPath>
     <itemPath>nlohmann/adl_serializer.hpp</itemPath>
     <itemPath>docker-compose.yml</itemPath>
+    <itemPath>app/placeholder</itemPath>
     <itemPath>zmq-server/sleep.php</itemPath>
   </logicalFolder>
   <sourceRootList>
@@ -71,6 +72,8 @@
       <item path="DataStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/placeholder" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cppzmq/zmq.hpp" ex="false" tool="3" flavor2="0">
       </item>
@@ -126,6 +129,8 @@
       <item path="DataStore.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="app/placeholder" ex="false" tool="3" flavor2="0">
       </item>
       <item path="cppzmq/zmq.hpp" ex="false" tool="3" flavor2="0">
       </item>
