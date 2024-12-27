@@ -30,15 +30,28 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
     <itemPath>Dockerfile</itemPath>
     <itemPath>nlohmann/adl_serializer.hpp</itemPath>
     <itemPath>docker-compose.yml</itemPath>
-    <itemPath>app/index.php</itemPath>
     <itemPath>zmq-server/sleep.php</itemPath>
+    <itemPath>app/index.php</itemPath>
     <itemPath>app/standard.php</itemPath>
     <itemPath>app/zeromq.php</itemPath>
   </logicalFolder>
   <sourceRootList>
+    <Elem>cppzmq</Elem>
+    <Elem>nlohmann</Elem>
     <Elem>cppzmq</Elem>
     <Elem>nlohmann</Elem>
   </sourceRootList>
@@ -114,7 +127,8 @@
             <pElem>nlohmann</pElem>
             <pElem>.</pElem>
             <pElem>/usr/local/include</pElem>
-            <pElem>/usr/local/include/msgpack</pElem>
+            <pElem>msgpack-c</pElem>
+            <pElem>msgpack-c/include/msgpack</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
