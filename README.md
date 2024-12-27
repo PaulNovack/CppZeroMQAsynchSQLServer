@@ -111,11 +111,13 @@ The standard.php runs 25 select queries at random offset retrieving 100 records 
 
 The zeromq.php rund the same outputting the same information but uses zeroMQ and the cpp_server to run the queries asynchronously.
 
-standard.php output:
+The zeroMQ version using asynch queries runs about 650% faster than the synchronous version.
+
+standard.php output:  Takes about 813 milliseconds
 
 ![screenshot](standard-php.png)
 
-zeromq.php output:
+zeromq.php output:   Takes about 124 milliseconds
 
 ![screenshot](zeromq-php.png)
 
