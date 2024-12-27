@@ -39,6 +39,16 @@ RUN docker-php-ext-install -j$(nproc) \
     xml \
     zip
 
+
+# Install msgpack extension from source
+RUN git clone https://github.com/msgpack/msgpack-php.git /usr/src/php/ext/msgpack && \
+    cd /usr/src/php/ext/msgpack && \
+    phpize && \
+    ./configure --enable-msgpack && \
+    make && \
+    make install && \
+    docker-php-ext-enable msgpack
+
 # Install and enable ZeroMQ PHP extension
 RUN git clone https://github.com/zeromq/php-zmq.git /usr/src/php/ext/zmq && \
     cd /usr/src/php/ext/zmq && \

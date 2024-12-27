@@ -12,7 +12,7 @@
 
 MySQLConnectionPool::MySQLConnectionPool(const std::string& host, const std::string& user, const std::string& password, const std::string& database, int poolSize, int heartbeatInterval)
     : host_(host), user_(user), password_(password), database_(database), poolSize_(poolSize), heartbeatInterval_(heartbeatInterval), heartbeatRunning_(true) {
-    sleep(5);
+    sleep(60);
     driver_ = sql::mysql::get_mysql_driver_instance();
     initializePool();
     startHeartbeat();
@@ -27,6 +27,8 @@ MySQLConnectionPool::~MySQLConnectionPool() {
 }
 
 sql::Connection* MySQLConnectionPool::getConnection() {
+    // Small sleep for shared CPU when running several docker containers 1/2 millisecond
+    std::this_thread::sleep_for(std::chrono::microseconds(500));
     std::lock_guard<std::mutex> lock(mutex_);
     if (!connectionPool_.empty()) {
         sql::Connection* conn = connectionPool_.back();

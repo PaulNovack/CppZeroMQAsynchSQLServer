@@ -12,6 +12,8 @@
             <sourceRootList>
                 <sourceRootElem>cppzmq</sourceRootElem>
                 <sourceRootElem>nlohmann</sourceRootElem>
+                <sourceRootElem>cppzmq</sourceRootElem>
+                <sourceRootElem>nlohmann</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

@@ -34,7 +34,7 @@ The `CppZeroMQAsynchSQLServer` repository demonstrates a robust way to implement
 
 1. **ZeroMQ for Communication:** Leverages ZeroMQ’s high-performance message queuing capabilities to manage communication between the server and clients.
 2. **Asynchronous Query Handling:** Processes multiple queries simultaneously using a thread pool.
-3. **JSON Response Format:** Responses are returned in JSON, making them easy to integrate with PHP frameworks.
+3. **Message Pack Response Format:** Responses are returned in message pack, making them easy to integrate with PHP frameworks.
 4. **Connection Pooling:** Efficient management of database connections ensures optimal resource utilization.
 
 ### How It Works
@@ -104,6 +104,24 @@ $promise->fetch()->then(function($users) {
 2. **Learning Curve:** Developers need to understand event loops, promises, and asynchronous programming.
 3. **Server Setup:** Deploying and managing a C++ ZeroMQ server requires expertise beyond standard PHP environments.
 4. **Compatibility:** Ensuring compatibility with existing database drivers and connection pooling mechanisms is essential.
+
+## Real example
+
+In the direcory of the project there are 2 files that can be run under apache:  stadard.php and zeromq.php.
+
+The standard.php runs 25 select queries at random offset retrieving 100 records each query and simply outputs the sql statements usng standard mysql connector.
+
+The zeromq.php rund the same outputting the same information but uses zeroMQ and the cpp_server to run the queries asynchronously.
+
+The zeroMQ version using asynch queries runs about 650% faster than the synchronous version.
+
+standard.php output:  Takes about 813 milliseconds
+
+![screenshot](standard-php.png)
+
+zeromq.php output:   Takes about 124 milliseconds
+
+![screenshot](zeromq-php.png)
 
 ## Conclusion
 

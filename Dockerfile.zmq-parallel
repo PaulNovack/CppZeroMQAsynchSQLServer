@@ -20,6 +20,16 @@ RUN apt-get update && \
 RUN docker-php-ext-install mysqli
 RUN docker-php-ext-install pdo_mysql
 
+# Install msgpack extension from source
+RUN git clone https://github.com/msgpack/msgpack-php.git /usr/src/php/ext/msgpack && \
+    cd /usr/src/php/ext/msgpack && \
+    phpize && \
+    ./configure --enable-msgpack && \
+    make && \
+    make install && \
+    docker-php-ext-enable msgpack
+
+
 # Clone the parallel extension source code
 RUN git clone https://github.com/krakjoe/parallel.git /usr/src/php/ext/parallel
 
