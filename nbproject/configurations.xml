@@ -44,8 +44,8 @@
     <itemPath>Dockerfile</itemPath>
     <itemPath>nlohmann/adl_serializer.hpp</itemPath>
     <itemPath>docker-compose.yml</itemPath>
-    <itemPath>zmq-server/sleep.php</itemPath>
     <itemPath>app/index.php</itemPath>
+    <itemPath>zmq-server/sleep.php</itemPath>
     <itemPath>app/standard.php</itemPath>
     <itemPath>app/zeromq.php</itemPath>
   </logicalFolder>
@@ -129,6 +129,7 @@
             <pElem>/usr/local/include</pElem>
             <pElem>msgpack-c</pElem>
             <pElem>msgpack-c/include/msgpack</pElem>
+            <pElem>msgpack-c/include</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
