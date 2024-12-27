@@ -27,6 +27,8 @@ MySQLConnectionPool::~MySQLConnectionPool() {
 }
 
 sql::Connection* MySQLConnectionPool::getConnection() {
+    // Small sleep for shared CPU when running several docker containers 1/2 millisecond
+    std::this_thread::sleep_for(std::chrono::microseconds(500));
     std::lock_guard<std::mutex> lock(mutex_);
     if (!connectionPool_.empty()) {
         sql::Connection* conn = connectionPool_.back();
