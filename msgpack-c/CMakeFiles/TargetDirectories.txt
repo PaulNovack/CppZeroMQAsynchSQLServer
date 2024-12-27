@@ -1,0 +1,7 @@
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/doxygen.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/edit_cache.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/rebuild_cache.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/list_install_components.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/install.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/install/local.dir
+/home/pnovack/2025-code/msgpack-c/CMakeFiles/install/strip.dir
