@@ -105,7 +105,21 @@ $promise->fetch()->then(function($users) {
 
 ## Real example
 
-In the direcory of the project there are 2 files that can be run under apache:  stadard.php and zeromq.php.
+Build all the containers: "docker-compose -f docker-compose.yml up --build"
+
+Sometimes the build will fail if the copy command does not complete before MakeFile runs if this happens run: "docker system prune -a"
+
+Then run build command again if it failed.
+
+In the app direcory of the project there are 2 files that can be run under apache:  standard.php and zeromq.php.
+
+
+You can access these files at: http://127.0.0.1:8080/standard.php  and  http://127.0.0.1:8080/zeromq.php once you see the containers have built and the message 
+
+cpp_server               | Database initialized and 500000 users added.
+
+cpp_server               | Server is running on tcp://0.0.0.0:5555
+
 
 The standard.php runs 25 select queries at random offset retrieving 100 records each query and simply outputs the sql statements usng standard mysql connector.
 
