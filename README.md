@@ -1,7 +1,5 @@
 # Adding Asynchronous Querying to PHP with C++ ZeroMQ and mySQL Server
 
-There is another branch messagepack that uses message pack instead of JSON for messsages sent with ZeroMQ probably better performance. https://github.com/PaulNovack/CppZeroMQAsynchSQLServer/tree/messagepack
-
 ## Introduction
 
 In modern web development, achieving efficient and scalable systems often requires handling asynchronous operations. PHP, traditionally synchronous in nature, has seen efforts to introduce asynchronous capabilities. One such approach leverages a combination of a C++ ZeroMQ server for managing SQL queries asynchronously and integrating this system with PHP frameworks like Symfony and Laravel. This README explores the benefits of asynchronous querying for PHP applications and how it can be seamlessly integrated into Symfony and Laravel by modifying Doctrine and Eloquent ORM.
