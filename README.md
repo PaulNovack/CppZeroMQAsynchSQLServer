@@ -103,6 +103,22 @@ $promise->fetch()->then(function($users) {
 3. **Server Setup:** Deploying and managing a C++ ZeroMQ server requires expertise beyond standard PHP environments.
 4. **Compatibility:** Ensuring compatibility with existing database drivers and connection pooling mechanisms is essential.
 
+## Real example
+
+In the direcory of the project there are 2 files that can be run under apache:  stadard.php and zeromq.php.
+
+The standard.php runs 25 select queries at random offset retrieving 100 records each query and simply outputs the sql statements usng standard mysql connector.
+
+The zeromq.php rund the same outputting the same information but uses zeroMQ and the cpp_server to run the queries asynchronously.
+
+standard.php output:
+
+![screenshot](standard-php.png)
+
+zeromq.php output:
+
+![screenshot](zeromq-php.png)
+
 ## Conclusion
 
 Introducing asynchronous querying to PHP through a C++ ZeroMQ SQL server unlocks significant performance and scalability benefits. By modifying Doctrine and Eloquent, frameworks like Symfony and Laravel can seamlessly integrate this capability, enabling developers to build modern, real-time, and scalable applications.
