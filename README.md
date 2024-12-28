@@ -60,6 +60,7 @@ To integrate asynchronous querying into Symfony, extend Doctrine’s Query Build
             'products' => $products
         ]);
 ```
+An example Symfony implentation is here: https://github.com/PaulNovack/symfony_async
 
 ### Modifying Eloquent
 
