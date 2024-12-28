@@ -48,6 +48,7 @@ The `CppZeroMQAsynchSQLServer` repository demonstrates a robust way to implement
 To integrate asynchronous querying into Symfony, extend Doctrine’s Query Builder:
 
 ```php
+        /** @var CustomRepository $repository */
         $repository = $doctrine->getRepository(Product::class);
         $repository->aSearchByName($searchTerm);
         // Do other work here query is executing on server aSearchByName() is non blocking
