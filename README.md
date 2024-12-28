@@ -48,23 +48,16 @@ The `CppZeroMQAsynchSQLServer` repository demonstrates a robust way to implement
 To integrate asynchronous querying into Symfony, extend Doctrine’s Query Builder:
 
 ```php
-$query = $entityManager->createQuery('SELECT u FROM User u WHERE u.status = ?1');
-$query->setParameter(1, 'active');
+        $repository = $doctrine->getRepository(Product::class);
+        $repository->aSearchByName($searchTerm);
+        // Do other work here query is executing on server aSearchByName() is non blocking
 
-// Send the query
-$promise = $query->sendAsync();
 
-// Perform other operations while the query is being executed
-echo "Fetching user count...\n";
-$userCount = $entityManager->createQuery('SELECT COUNT(u) FROM User u')->getSingleScalarResult();
-echo "User count: $userCount\n";
-
-// Later, fetch the results
-$promise->fetch()->then(function($results) {
-    foreach ($results as $user) {
-        echo $user->getName();
-    }
-});
+        // Get results back from server blocking get results
+        $products = $repository->aSyncFetch();
+        return $this->render('product/list.html.twig', [
+            'products' => $products
+        ]);
 ```
 
 ### Modifying Eloquent
