@@ -60,7 +60,7 @@ To integrate asynchronous querying into Symfony, extend Doctrine’s Query Build
             'products' => $products
         ]);
 ```
-An example Symfony implentation is here: https://github.com/PaulNovack/symfony_async
+An example Symfony implementation is here: https://github.com/PaulNovack/symfony_async
 
 ### Modifying Eloquent
 
@@ -75,6 +75,7 @@ For Laravel, extend Eloquent’s query builder:
         $users = $user->aFetchResults();
         return view('users.index', compact('users'));
 ```
+An example Laravel implementation is here: https://github.com/PaulNovack/laravel_async
 
 ## Benefits of Asynchronous Querying
 
