@@ -72,21 +72,13 @@ $promise->fetch()->then(function($results) {
 For Laravel, extend Eloquent’s query builder:
 
 ```php
-$promise = User::where('status', 'active')->sendAsync();
+        $user = new User();
+        $user->aFetchAll();
+        // Do other work here query is executing on server aFetchAll() is non blocking
 
-// Perform other operations while the query is being executed
-echo "Fetching latest orders...\n";
-$latestOrders = Order::latest()->take(5)->get();
-foreach ($latestOrders as $order) {
-    echo "Order ID: {$order->id}, Total: {$order->total}\n";
-}
-
-// Later, fetch the results
-$promise->fetch()->then(function($users) {
-    foreach ($users as $user) {
-        echo $user->name;
-    }
-});
+        // Get results back from server blocking get results
+        $users = $user->aFetchResults();
+        return view('users.index', compact('users'));
 ```
 
 ## Benefits of Asynchronous Querying
