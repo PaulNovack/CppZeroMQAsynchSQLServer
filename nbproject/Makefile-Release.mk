@@ -35,7 +35,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/DataStore.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/mySQLConnectionPool.o
 
@@ -63,11 +62,6 @@ LDLIBSOPTIONS=-ldl -lpthread `pkg-config --libs libmariadb` `pkg-config --libs l
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppzeromqasynchsqlserver: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppzeromqasynchsqlserver ${OBJECTFILES} ${LDLIBSOPTIONS} -lmysqlcppconn
-
-${OBJECTDIR}/DataStore.o: DataStore.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -Imsgpack-c -Imsgpack-c/include/msgpack -Imsgpack-c/include `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DataStore.o DataStore.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

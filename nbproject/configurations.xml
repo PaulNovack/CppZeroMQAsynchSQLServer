@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>DataStore.h</itemPath>
       <itemPath>mySQLConnectionPool.h</itemPath>
       <itemPath>cppzmq/zmq.hpp</itemPath>
     </logicalFolder>
@@ -15,7 +14,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>DataStore.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>mySQLConnectionPool.cpp</itemPath>
     </logicalFolder>
@@ -82,10 +80,6 @@
           <commandLine>-lmysqlcppconn</commandLine>
         </linkerTool>
       </compileType>
-      <item path="DataStore.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="DataStore.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
       </item>
       <item path="app/index.php" ex="false" tool="3" flavor2="0">
@@ -147,10 +141,6 @@
           <commandLine>-lmysqlcppconn</commandLine>
         </linkerTool>
       </compileType>
-      <item path="DataStore.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="DataStore.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Dockerfile" ex="false" tool="3" flavor2="0">
       </item>
       <item path="app/index.php" ex="false" tool="3" flavor2="0">

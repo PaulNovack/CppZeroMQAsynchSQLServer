@@ -84,6 +84,26 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
         }
     } catch (sql::SQLException &e) {
         cerr << "SQL Error for Query ID: " << queryId << ": " << e.what() << endl;
+
+        // Serialize the error response using MessagePack
+        msgpack::sbuffer sbuf;
+        msgpack::packer<msgpack::sbuffer> packer(sbuf);
+
+        // Pack the error response as a map
+        packer.pack_map(3); // Three key-value pairs: "id", "error", and "message"
+        packer.pack("id");
+        packer.pack(queryId);
+        packer.pack("ERROR");
+        packer.pack("SQLError");
+        packer.pack("Message");
+        packer.pack(e.what());
+
+        // Send the error response
+        {
+            lock_guard<mutex> lock(mtx);
+            socket.send(zmq::buffer(clientId), zmq::send_flags::sndmore);
+            socket.send(zmq::buffer(sbuf.data(), sbuf.size()), zmq::send_flags::none);
+        }
     } catch (const std::exception &e) {
         cerr << "General Error for Query ID: " << queryId << ": " << e.what() << endl;
     } catch (...) {
