@@ -124,6 +124,7 @@
             <pElem>msgpack-c/include/msgpack</pElem>
             <pElem>msgpack-c/include</pElem>
           </incDir>
+          <commandLine>-march=native</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
