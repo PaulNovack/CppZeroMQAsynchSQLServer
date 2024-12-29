@@ -103,9 +103,43 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
             socket.send(zmq::buffer(sbuf.data(), sbuf.size()), zmq::send_flags::none);
         }
     } catch (const std::exception &e) {
-        cerr << "General Error for Query ID: " << queryId << ": " << e.what() << endl;
+
+        // Serialize the error response using MessagePack
+        msgpack::sbuffer sbuf;
+        msgpack::packer<msgpack::sbuffer> packer(sbuf);
+
+        // Pack the error response as a map
+        packer.pack_map(2); // Three key-value pairs: "id", "error", and "message"
+        packer.pack("id");
+        packer.pack(queryId);
+        packer.pack("ERROR:ASYNCSQLSERVERGENERALEXCEPTION");
+        packer.pack(e.what());
+
+        // Send the error response
+        {
+            lock_guard<mutex> lock(mtx);
+            socket.send(zmq::buffer(clientId), zmq::send_flags::sndmore);
+            socket.send(zmq::buffer(sbuf.data(), sbuf.size()), zmq::send_flags::none);
+        }
     } catch (...) {
         cerr << "Unhandled exception during request processing." << endl;
+                // Serialize the error response using MessagePack
+        msgpack::sbuffer sbuf;
+        msgpack::packer<msgpack::sbuffer> packer(sbuf);
+
+        // Pack the error response as a map
+        packer.pack_map(2); // Three key-value pairs: "id", "error", and "message"
+        packer.pack("id");
+        packer.pack(queryId);
+        packer.pack("ERROR:ASYNCSQLSERVERUNHANDLEDEXCEPTIONTYPE");
+        packer.pack("Unhandled exception during request processing.");
+
+        // Send the error response
+        {
+            lock_guard<mutex> lock(mtx);
+            socket.send(zmq::buffer(clientId), zmq::send_flags::sndmore);
+            socket.send(zmq::buffer(sbuf.data(), sbuf.size()), zmq::send_flags::none);
+        }
     }
     if (conn) {
         connectionPool.releaseConnection(conn);
