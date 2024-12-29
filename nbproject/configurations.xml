@@ -114,7 +114,7 @@
           <developmentMode>5</developmentMode>
         </cTool>
         <ccTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
           <standard>11</standard>
           <incDir>
             <pElem>nlohmann</pElem>

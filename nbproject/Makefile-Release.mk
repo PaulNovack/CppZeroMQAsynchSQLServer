@@ -66,12 +66,12 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppzeromqasynchsqlserver: ${OBJECTFIL
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -Imsgpack-c -Imsgpack-c/include/msgpack -Imsgpack-c/include `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O3 -Inlohmann -I. -I/usr/local/include -Imsgpack-c -Imsgpack-c/include/msgpack -Imsgpack-c/include `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/mySQLConnectionPool.o: mySQLConnectionPool.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Inlohmann -I. -I/usr/local/include -Imsgpack-c -Imsgpack-c/include/msgpack -Imsgpack-c/include `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mySQLConnectionPool.o mySQLConnectionPool.cpp
+	$(COMPILE.cc) -O3 -Inlohmann -I. -I/usr/local/include -Imsgpack-c -Imsgpack-c/include/msgpack -Imsgpack-c/include `pkg-config --cflags libmariadb` `pkg-config --cflags libzmq` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/mySQLConnectionPool.o mySQLConnectionPool.cpp
 
 # Subprojects
 .build-subprojects:
