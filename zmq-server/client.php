@@ -7,7 +7,7 @@ $socket = $context->getSocket(ZMQ::SOCKET_DEALER);
 
 $clientId = uniqid("client_");
 $socket->setSockOpt(ZMQ::SOCKOPT_IDENTITY, $clientId);
-$socket->connect("tcp://cpp_server:5555");
+$socket->connect("tcp://mySql:5555");
 
 echo "Client ID: $clientId\n";
 

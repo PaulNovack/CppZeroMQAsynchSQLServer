@@ -5,7 +5,7 @@
 $startTime = microtime(true);
 
 // Database connection settings
-$host = "mysql"; // Replace with your database host
+$host = "mySql"; // Replace with your database host
 $dbname = "testdb"; // Replace with your database name
 $username = "paul"; // Replace with your database username
 $password = "password"; // Replace with your database password
