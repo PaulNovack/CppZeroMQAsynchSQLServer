@@ -37,9 +37,9 @@ The `CppZeroMQAsynchSQLServer` repository demonstrates a robust way to implement
 
 ### How It Works
 
-- **Client Side:** PHP sends a query request to the C++ server via ZeroMQ.
+- **Client Side:** PHP sends a query request to the C++ server via ZeroMQ asynchronously non blocking allows the PHP Application to perform other operations.
 - **Server Side:** The C++ server receives the query, executes it asynchronously, and sends back the result.
-- **PHP Integration:** The response is handled asynchronously in PHP, enabling the application to process the data when it arrives.
+- **PHP Integration:** The response is handled then synchronously in PHP, enabling the application to process the data when it arrives.
 
 ## Integration into Symfony and Laravel
 
