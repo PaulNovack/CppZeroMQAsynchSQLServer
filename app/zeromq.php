@@ -14,7 +14,7 @@ echo "Client ID: $clientId\n";
 
 $queries = [];
 
-for ($i = 0; $i < 25; $i++) {
+for ($i = 0; $i < 100; $i++) {
     $totalRows = 500000; // Adjust this to the total number of rows in the table
     $randomOffset = mt_rand(0, $totalRows - 1);
     $query = "SELECT users.* FROM users LIMIT 100 OFFSET $randomOffset";
@@ -41,8 +41,8 @@ while (count($receivedResponses) < count($queries)) {
     if (isset($payload['id']) && isset($queryMap[$payload['id']])) {
         $queryId = $payload['id'];
         $receivedResponses[$queryId] = $payload['data'];
-        //echo  "\n</ br></ br>";
-        //print_r($payload['data']);
+        echo  "\n</ br></ br>";
+        print_r($payload['data']);
     } else {
         echo "Received response with unknown query ID.\n";
     }

@@ -20,7 +20,7 @@ try {
     $queries = [];
     $totalRows = 500000; // Adjust this to the total number of rows in the table
 
-    for ($i = 0; $i < 25; $i++) {
+    for ($i = 0; $i < 100; $i++) {
         $randomOffset = mt_rand(0, $totalRows - 1);
         $query = "SELECT users.* FROM users LIMIT 100 OFFSET $randomOffset";
         $queries[] = $query;

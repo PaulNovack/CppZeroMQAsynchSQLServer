@@ -20,13 +20,13 @@ using namespace std;
 mutex mtx;
 condition_variable cv;
 int responses = 0;
-const int maxThreads = 40;
+const int maxThreads = 80;
 
 // Queue to hold pending requests
 queue<tuple<string, string, string>> requestQueue;
 
 // Initialize MySQL connection pool
-const int poolSize = 40;
+const int poolSize = 80;
 const int heartbeatInterval = 60;
 
 MySQLConnectionPool connectionPool(
