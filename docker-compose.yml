@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
-  mySql:
+  mysql:
     image: mysql:8.0
-    container_name: mySql
+    container_name: mysql
     networks:
       - app-network
     environment:
@@ -17,15 +17,15 @@ services:
       - "3307:3306"
       - "33061:33060"
       
-  zeroMQAsyncMySQL:
+  zeromqasyncmysql:
     build:
       context: .
       dockerfile: Dockerfile.cpp_server
-    container_name: zeroMQAsyncMySQL
+    container_name: zeromqasyncmysql
     networks:
       - app-network
     depends_on:
-      - mySql
+      - mysql
     environment:
       MYSQL_HOST: mysql
       MYSQL_USER: paul
@@ -34,25 +34,25 @@ services:
     ports:
       - "5555:5555"
       
-  zmqParallel:
+  zmqparallel:
     build:
       context: .
       dockerfile: Dockerfile.zmq-parallel
-    container_name: zmqParallel
+    container_name: zmqparallel
     networks:
       - app-network
     volumes:
       - ./zmq-server:/app
     depends_on:
-      - mySql
-      - zeroMQAsyncMySQL
+      - mysql
+      - zeromqasyncmysql
     command: php /app/sleep.php   
       
-  phpApache:
+  phpapache:
     build:
       context: .
       dockerfile: Dockerfile.php-apache
-    container_name: phpApache
+    container_name: phpapache
     networks:
       - app-network
     volumes:
@@ -60,9 +60,9 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - mySql
-      - zmqParallel     
-      - zeroMQAsyncMySQL
+      - mysql
+      - zmqparallel     
+      - zeromqasyncmysql
 
 networks:
   app-network:

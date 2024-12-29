@@ -90,12 +90,10 @@ void handleRequest(zmq::socket_t &socket, const string &queryId, const string &q
         msgpack::packer<msgpack::sbuffer> packer(sbuf);
 
         // Pack the error response as a map
-        packer.pack_map(3); // Three key-value pairs: "id", "error", and "message"
+        packer.pack_map(2); // Three key-value pairs: "id", "error", and "message"
         packer.pack("id");
         packer.pack(queryId);
-        packer.pack("ERROR");
-        packer.pack("SQLError");
-        packer.pack("Message");
+        packer.pack("ERROR:SQLException");
         packer.pack(e.what());
 
         // Send the error response
@@ -145,9 +143,9 @@ void initializeDatabase() {
         unique_ptr<sql::Statement> stmt(conn->createStatement());
         stmt->execute("CREATE DATABASE IF NOT EXISTS testdb");
         stmt->execute("USE testdb");
-        stmt->execute("DROP TABLE IF EXISTS users");
+        stmt->execute("DROP TABLE IF EXISTS person");
         stmt->execute(
-            "CREATE TABLE users ("
+            "CREATE TABLE person ("
             "id INT AUTO_INCREMENT PRIMARY KEY,"
             "name VARCHAR(100) NOT NULL,"
             "email VARCHAR(100) NOT NULL,"
@@ -155,7 +153,7 @@ void initializeDatabase() {
         );
 
         // Insert 5000 users into the table using a single SQL command
-        std::string insertQuery = "INSERT INTO users (name, email) VALUES ";
+        std::string insertQuery = "INSERT INTO person (name, email) VALUES ";
         for (int i = 1; i <= 100000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
             if (i < 100000) {
@@ -166,7 +164,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
         
-        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        insertQuery = "INSERT INTO person (name, email) VALUES ";
         for (int i = 100001; i <= 200000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
             if (i < 200000) {
@@ -177,7 +175,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
         
-        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        insertQuery = "INSERT INTO person (name, email) VALUES ";
         for (int i = 200001; i <= 300000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
             if (i < 300000) {
@@ -188,7 +186,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
         
-        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        insertQuery = "INSERT INTO person (name, email) VALUES ";
         for (int i = 300001; i <= 400000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
             if (i < 400000) {
@@ -199,7 +197,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
         
-        insertQuery = "INSERT INTO users (name, email) VALUES ";
+        insertQuery = "INSERT INTO person (name, email) VALUES ";
         for (int i = 400001; i <= 500000; ++i) {
             insertQuery += "('User " + std::to_string(i) + "', 'user" + std::to_string(i) + "@example.com')";
             if (i < 500000) {
@@ -210,7 +208,7 @@ void initializeDatabase() {
         // Execute the bulk insert
         stmt->execute(insertQuery);
 
-        cout << "Database initialized and 500000 users added." << endl;
+        cout << "Database initialized and 500000 persons added." << endl;
     } catch (sql::SQLException &e) {
         cerr << "SQL Error during database initialization: " << e.what() << endl;
     } catch (const std::exception &e) {

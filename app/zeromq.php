@@ -8,7 +8,7 @@ $socket = $context->getSocket(ZMQ::SOCKET_DEALER);
 
 $clientId = uniqid("client_");
 $socket->setSockOpt(ZMQ::SOCKOPT_IDENTITY, $clientId);
-$socket->connect("tcp://zeroMQAsyncMySQL:5555");
+$socket->connect("tcp://zeromqasyncmysql:5555");
 
 echo "Client ID: $clientId\n";
 
@@ -17,7 +17,7 @@ $queries = [];
 for ($i = 0; $i < 100; $i++) {
     $totalRows = 500000; // Adjust this to the total number of rows in the table
     $randomOffset = mt_rand(0, $totalRows - 1);
-    $query = "SELECT users.* FROM users LIMIT 100 OFFSET $randomOffset";
+    $query = "SELECT person.* FROM person LIMIT 100 OFFSET $randomOffset";
     $queries[] = $query;
 }
 
